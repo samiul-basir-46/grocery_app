@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_shop/screen/onboardScreen/onboard_screen.dart';
 import '../../utils/colors.dart';
-import '../loginScreen/login_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});

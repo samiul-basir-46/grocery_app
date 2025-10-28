@@ -42,6 +42,7 @@ class OnboardScreen extends StatelessWidget {
                 ),
                 SizedBox(height: screenHeight * 0.05),
                 CustomButton(
+                  isLoading: false,
                   title: "Get Started",
                   onTap: () => Navigator.pushReplacement(
                     context,

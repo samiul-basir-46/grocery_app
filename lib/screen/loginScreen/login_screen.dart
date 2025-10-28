@@ -1,28 +1,31 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:food_shop/provider/auth_provider.dart';
+import 'package:food_shop/provider/toggleProvider.dart';
 import 'package:food_shop/screen/locationScreen/location_screen.dart';
 import 'package:food_shop/screen/signupScreen/signup_screen.dart';
 import 'package:food_shop/services/api_services.dart';
 import 'package:food_shop/utils/colors.dart';
 import 'package:food_shop/widgets/custom_button.dart';
 import 'package:food_shop/widgets/custom_text_field.dart';
+import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key});
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
+  final _formKey = GlobalKey<FormState>();
 
-class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
-  final passwordController = TextEditingController();
 
-  bool isObs = false;
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.sizeOf(context).height;
+
+    final authProvider = context.watch<ApiProvider>();
+
+    final toggleProvider = context.watch<ToggleProvider>();
 
     return Scaffold(
       body: SafeArea(
@@ -51,24 +54,45 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(fontSize: 14, color: Colors.grey),
                 ),
                 SizedBox(height: screenHeight * 0.04),
-                CustomTextField(
-                  controller: emailController,
-                  text: 'Email',
-                  isObscure: false,
-                ),
-                SizedBox(height: screenHeight * 0.03),
-                CustomTextField(
-                  controller: passwordController,
-                  text: 'Password',
-                  icon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        isObs = !isObs;
-                      });
-                    },
-                    icon: Icon(isObs ? Icons.visibility : Icons.visibility_off),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      CustomTextField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter your valid email";
+                          }
+                          return null;
+                        },
+                        controller: emailController,
+                        text: 'Email',
+                        isObscure: false,
+                      ),
+                      SizedBox(height: screenHeight * 0.03),
+                      CustomTextField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter your valid password";
+                          }
+                          return null;
+                        },
+                        controller: passwordController,
+                        text: 'Password',
+                        icon: IconButton(
+                          onPressed: () {
+                            toggleProvider.toggleVisibility();
+                          },
+                          icon: Icon(
+                            toggleProvider.isVisibility
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                        ),
+                        isObscure: toggleProvider.isVisibility,
+                      ),
+                    ],
                   ),
-                  isObscure: !isObs,
                 ),
                 SizedBox(height: screenHeight * 0.03),
                 Align(
@@ -77,17 +101,43 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: screenHeight * 0.04),
                 CustomButton(
+                  isLoading: authProvider.isLoading,
                   title: "Log in",
-                  onTap: () => {
-                    ApiServices.fetchLogin(
-                      emailController.text,
-                      passwordController.text,
-                    ),
-                    _onTapLoginButton(),
+                  onTap: () async {
+                    if (_formKey.currentState!.validate()) {
+                      final success = await authProvider.fetchLogin(
+                        emailController.text,
+                        passwordController.text,
+                      );
+                      if (success) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Login Successful")),
+                        );
+
+                        await Future.delayed(
+                          Duration(seconds: 1),
+                          () => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LocationScreen(),
+                            ),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              authProvider.errorMessage ?? "Unknown error",
+                            ),
+                          ),
+                        );
+                      }
+                    }
                   },
                 ),
                 SizedBox(height: screenHeight * 0.02),
                 CustomButton(
+                  isLoading: false,
                   title: "Continue with Google",
                   color: AppColors.secondaryColor,
                 ),
@@ -104,7 +154,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         TextSpan(
                           text: 'Sign up',
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => _onTapSignupButton(),
+                            ..onTap = () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SignupScreen(),
+                              ),
+                            ),
                           style: TextStyle(color: AppColors.primaryColor),
                         ),
                       ],
@@ -116,20 +171,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  void _onTapSignupButton() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => SignupScreen()),
-    );
-  }
-
-  void _onTapLoginButton() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LocationScreen()),
     );
   }
 }

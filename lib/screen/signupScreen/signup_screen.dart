@@ -1,29 +1,32 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:food_shop/provider/auth_provider.dart';
+import 'package:food_shop/provider/toggleProvider.dart';
 import 'package:food_shop/screen/loginScreen/login_screen.dart';
-import 'package:food_shop/services/api_services.dart';
+import 'package:provider/provider.dart';
 
 import '../../utils/colors.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+class SignupScreen extends StatelessWidget {
+  SignupScreen({super.key});
 
-  @override
-  State<SignupScreen> createState() => _SignupScreenState();
-}
-
-class _SignupScreenState extends State<SignupScreen> {
   final nameController = TextEditingController();
+
   final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
 
-  bool isObs = false;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.sizeOf(context).height;
+
+    final authProvider = context.watch<ApiProvider>();
+    final toggleProvider = context.watch<ToggleProvider>();
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -51,29 +54,58 @@ class _SignupScreenState extends State<SignupScreen> {
                   style: TextStyle(fontSize: 14, color: Colors.grey),
                 ),
                 SizedBox(height: screenHeight * 0.04),
-                CustomTextField(
-                  text: 'Username',
-                  isObscure: false,
-                  controller: nameController,
-                ),
-                SizedBox(height: screenHeight * 0.03),
-                CustomTextField(
-                  text: 'Email',
-                  isObscure: false,
-                  controller: emailController,
-                ),
-                SizedBox(height: screenHeight * 0.03),
-                CustomTextField(
-                  text: 'Password',
-                  controller: passwordController,
-                  isObscure: !isObs,
-                  icon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        isObs = !isObs;
-                      });
-                    },
-                    icon: Icon(isObs ? Icons.visibility : Icons.visibility_off),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      CustomTextField(
+                        text: 'Username',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter your username";
+                          }
+                          return null;
+                        },
+                        isObscure: false,
+                        controller: nameController,
+                      ),
+                      SizedBox(height: screenHeight * 0.03),
+                      CustomTextField(
+                        text: 'Email',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter your email";
+                          }
+                          return null;
+                        },
+                        isObscure: false,
+                        controller: emailController,
+                      ),
+                      SizedBox(height: screenHeight * 0.03),
+                      CustomTextField(
+                        text: 'Password',
+                        controller: passwordController,
+                        isObscure: toggleProvider.isVisibility,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter your password";
+                          } else if (value.length < 6) {
+                            return "Password must be at least 6 characters";
+                          }
+                          return null;
+                        },
+                        icon: IconButton(
+                          onPressed: () {
+                            toggleProvider.toggleVisibility();
+                          },
+                          icon: Icon(
+                            toggleProvider.isVisibility
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.03),
@@ -102,14 +134,32 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 SizedBox(height: screenHeight * 0.04),
                 CustomButton(
+                  isLoading: authProvider.isLoading,
                   title: "Sign up",
-                  onTap: () => {
-                    ApiServices.fetchReg(
-                      nameController.text,
-                      emailController.text,
-                      passwordController.text,
-                    ),
-                    _onTapSignupButton(),
+                  onTap: () async {
+                    if (_formKey.currentState!.validate()) {
+                      await authProvider.fetchReg(
+                        nameController.text,
+                        emailController.text,
+                        passwordController.text,
+                      );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                      );
+                      if (authProvider.errorMessage != null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(authProvider.errorMessage!)),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Account Created")),
+                        );
+                      }
+                    }
+
+
+
                   },
                 ),
                 SizedBox(height: screenHeight * 0.02),
@@ -125,7 +175,12 @@ class _SignupScreenState extends State<SignupScreen> {
                         TextSpan(
                           text: 'Sign in',
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => _onTapSignupButton(),
+                            ..onTap = () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginScreen(),
+                              ),
+                            ),
                           style: TextStyle(color: AppColors.primaryColor),
                         ),
                       ],
@@ -137,13 +192,6 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  void _onTapSignupButton() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
     );
   }
 }
