@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:food_shop/screen/loginScreen/login_screen.dart';
+import 'package:food_shop/services/api_services.dart';
 
 import '../../utils/colors.dart';
 import '../../widgets/custom_button.dart';
@@ -14,6 +15,12 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  bool isObs = false;
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.sizeOf(context).height;
@@ -28,7 +35,10 @@ class _SignupScreenState extends State<SignupScreen> {
                 SizedBox(height: screenHeight * 0.02),
                 Align(
                   alignment: Alignment.center,
-                  child: Image.asset("assets/images/carrot_images.png", scale: 3),
+                  child: Image.asset(
+                    "assets/images/carrot_images.png",
+                    scale: 3,
+                  ),
                 ),
                 SizedBox(height: screenHeight * 0.05),
                 Text(
@@ -41,17 +51,30 @@ class _SignupScreenState extends State<SignupScreen> {
                   style: TextStyle(fontSize: 14, color: Colors.grey),
                 ),
                 SizedBox(height: screenHeight * 0.04),
-                CustomTextField(text: 'Username', isObscure: false),
+                CustomTextField(
+                  text: 'Username',
+                  isObscure: false,
+                  controller: nameController,
+                ),
                 SizedBox(height: screenHeight * 0.03),
-                CustomTextField(text: 'Email', isObscure: false),
+                CustomTextField(
+                  text: 'Email',
+                  isObscure: false,
+                  controller: emailController,
+                ),
                 SizedBox(height: screenHeight * 0.03),
                 CustomTextField(
                   text: 'Password',
+                  controller: passwordController,
+                  isObscure: !isObs,
                   icon: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        isObs = !isObs;
+                      });
+                    },
+                    icon: Icon(isObs ? Icons.visibility : Icons.visibility_off),
                   ),
-                  isObscure: true,
                 ),
                 SizedBox(height: screenHeight * 0.03),
                 Align(
@@ -59,12 +82,16 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: RichText(
                     text: TextSpan(
                       text: 'By continuing you agree to our ',
+                      style: TextStyle(color: Colors.black),
                       children: [
                         TextSpan(
                           text: 'Terms of Service ',
                           style: TextStyle(color: AppColors.primaryColor),
                         ),
-                        TextSpan(text: 'and '),
+                        TextSpan(
+                          text: 'and ',
+                          style: TextStyle(color: Colors.black),
+                        ),
                         TextSpan(
                           text: 'Privacy Policy',
                           style: TextStyle(color: AppColors.primaryColor),
@@ -74,14 +101,27 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.04),
-                CustomButton(title: "Sign up", onTap: () => _onTapSignupButton()),
+                CustomButton(
+                  title: "Sign up",
+                  onTap: () => {
+                    ApiServices.fetchReg(
+                      nameController.text,
+                      emailController.text,
+                      passwordController.text,
+                    ),
+                    _onTapSignupButton(),
+                  },
+                ),
                 SizedBox(height: screenHeight * 0.02),
                 Align(
                   alignment: Alignment.center,
                   child: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(text: 'Already have an account? '),
+                        TextSpan(
+                          text: 'Already have an account? ',
+                          style: TextStyle(color: Colors.black),
+                        ),
                         TextSpan(
                           text: 'Sign in',
                           recognizer: TapGestureRecognizer()

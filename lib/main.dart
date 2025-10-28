@@ -1,9 +1,10 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:food_shop/screen/signupScreen/signup_screen.dart';
 import 'package:food_shop/screen/splashScreen/splash_screen.dart';
 
 void main() {
-  runApp(DevicePreview(builder: (context) => MyApp()));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: SplashScreen(),
+      home: SignupScreen(),
     );
   }
 }

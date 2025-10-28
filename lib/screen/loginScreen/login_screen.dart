@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:food_shop/screen/locationScreen/location_screen.dart';
 import 'package:food_shop/screen/signupScreen/signup_screen.dart';
+import 'package:food_shop/services/api_services.dart';
 import 'package:food_shop/utils/colors.dart';
 import 'package:food_shop/widgets/custom_button.dart';
 import 'package:food_shop/widgets/custom_text_field.dart';
@@ -14,6 +15,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  bool isObs = false;
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.sizeOf(context).height;
@@ -29,7 +35,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: screenHeight * 0.02),
                 Align(
                   alignment: Alignment.center,
-                  child: Image.asset("assets/images/carrot_images.png", scale: 3),
+                  child: Image.asset(
+                    "assets/images/carrot_images.png",
+                    scale: 3,
+                  ),
                 ),
                 SizedBox(height: screenHeight * 0.05),
                 Text(
@@ -42,15 +51,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(fontSize: 14, color: Colors.grey),
                 ),
                 SizedBox(height: screenHeight * 0.04),
-                CustomTextField(text: 'Email', isObscure: false),
+                CustomTextField(
+                  controller: emailController,
+                  text: 'Email',
+                  isObscure: false,
+                ),
                 SizedBox(height: screenHeight * 0.03),
                 CustomTextField(
+                  controller: passwordController,
                   text: 'Password',
                   icon: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        isObs = !isObs;
+                      });
+                    },
+                    icon: Icon(isObs ? Icons.visibility : Icons.visibility_off),
                   ),
-                  isObscure: true,
+                  isObscure: !isObs,
                 ),
                 SizedBox(height: screenHeight * 0.03),
                 Align(
@@ -58,7 +76,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Text("Forget password?"),
                 ),
                 SizedBox(height: screenHeight * 0.04),
-                CustomButton(title: "Log in", onTap: () => _onTapLoginButton()),
+                CustomButton(
+                  title: "Log in",
+                  onTap: () => {
+                    ApiServices.fetchLogin(
+                      emailController.text,
+                      passwordController.text,
+                    ),
+                    _onTapLoginButton(),
+                  },
+                ),
                 SizedBox(height: screenHeight * 0.02),
                 CustomButton(
                   title: "Continue with Google",
@@ -70,7 +97,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(text: 'Don\'t have an account? '),
+                        TextSpan(
+                          text: 'Don\'t have an account? ',
+                          style: TextStyle(color: Colors.black),
+                        ),
                         TextSpan(
                           text: 'Sign up',
                           recognizer: TapGestureRecognizer()
