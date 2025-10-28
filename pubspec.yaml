@@ -37,6 +37,7 @@ dependencies:
   http:
   provider:
   device_preview:
+  get_storage:
 
 dev_dependencies:
   flutter_test:
