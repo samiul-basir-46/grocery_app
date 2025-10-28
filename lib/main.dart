@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_shop/provider/auth_provider.dart';
-import 'package:food_shop/provider/toggleProvider.dart';
-import 'package:food_shop/screen/loginScreen/login_screen.dart';
+import 'package:food_shop/provider/toggle_provider.dart';
 import 'package:food_shop/screen/splashScreen/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +19,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: LoginScreen(),
+      home: SplashScreen(),
     );
   }
 }

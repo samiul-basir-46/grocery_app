@@ -1,10 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:food_shop/provider/auth_provider.dart';
-import 'package:food_shop/provider/toggleProvider.dart';
+import 'package:food_shop/provider/toggle_provider.dart';
 import 'package:food_shop/screen/loginScreen/login_screen.dart';
 import 'package:provider/provider.dart';
-
 import '../../utils/colors.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
@@ -157,9 +156,6 @@ class SignupScreen extends StatelessWidget {
                         );
                       }
                     }
-
-
-
                   },
                 ),
                 SizedBox(height: screenHeight * 0.02),

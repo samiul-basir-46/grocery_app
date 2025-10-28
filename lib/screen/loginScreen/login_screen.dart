@@ -1,10 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:food_shop/provider/auth_provider.dart';
-import 'package:food_shop/provider/toggleProvider.dart';
+import 'package:food_shop/provider/toggle_provider.dart';
 import 'package:food_shop/screen/locationScreen/location_screen.dart';
 import 'package:food_shop/screen/signupScreen/signup_screen.dart';
-import 'package:food_shop/services/api_services.dart';
 import 'package:food_shop/utils/colors.dart';
 import 'package:food_shop/widgets/custom_button.dart';
 import 'package:food_shop/widgets/custom_text_field.dart';
