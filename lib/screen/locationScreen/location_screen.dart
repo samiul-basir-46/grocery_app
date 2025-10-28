@@ -26,7 +26,10 @@ class LocationScreen extends StatelessWidget {
               children: [
                 Align(
                   alignment: Alignment.center,
-                  child: Image.asset("assets/images/map_image.png", scale: 3.5),
+                  child: Image.asset(
+                    "assets/images/map_image.png",
+                    scale: 3.5,
+                  ),
                 ),
                 SizedBox(height: screenHeight * 0.03),
                 Text(
@@ -42,7 +45,7 @@ class LocationScreen extends StatelessWidget {
               ],
             ),
             SizedBox(),
-            CustomButton(title: "Submit")
+            CustomButton(title: "Submit"),
           ],
         ),
       ),

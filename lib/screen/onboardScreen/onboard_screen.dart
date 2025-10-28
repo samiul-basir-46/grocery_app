@@ -16,38 +16,40 @@ class OnboardScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            children: [
-              SizedBox(height: screenHeight * 0.5),
-              Align(
-                alignment: Alignment.center,
-                child: Image.asset("assets/images/white_carrot.png", scale: 3),
-              ),
-              SizedBox(height: screenHeight * 0.03),
-              Text(
-                "Welcome\nto our store",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 38,
-                  color: Colors.white,
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: screenHeight * 0.5),
+                Align(
+                  alignment: Alignment.center,
+                  child: Image.asset("assets/images/white_carrot.png", scale: 3),
                 ),
-              ),
-              Text(
-                "Get your groceries in as fast as one hour",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, color: Colors.grey),
-              ),
-              SizedBox(height: screenHeight * 0.05),
-              CustomButton(
-                title: "Get Started",
-                onTap: () => Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                SizedBox(height: screenHeight * 0.03),
+                Text(
+                  "Welcome\nto our store",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 38,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-            ],
+                Text(
+                  "Get your groceries in as fast as one hour",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+                SizedBox(height: screenHeight * 0.05),
+                CustomButton(
+                  title: "Get Started",
+                  onTap: () => Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
