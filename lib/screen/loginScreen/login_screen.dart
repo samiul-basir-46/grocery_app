@@ -14,7 +14,7 @@ class LoginScreen extends StatelessWidget {
 
   final _formKey = GlobalKey<FormState>();
 
-  final emailController = TextEditingController();
+  final usernameController = TextEditingController();
 
   final passwordController = TextEditingController();
 
@@ -64,8 +64,8 @@ class LoginScreen extends StatelessWidget {
                           }
                           return null;
                         },
-                        controller: emailController,
-                        text: 'Email',
+                        controller: usernameController,
+                        text: 'Username',
                         isObscure: false,
                       ),
                       SizedBox(height: screenHeight * 0.03),
@@ -105,23 +105,33 @@ class LoginScreen extends StatelessWidget {
                   onTap: () async {
                     if (_formKey.currentState!.validate()) {
                       final success = await authProvider.fetchLogin(
-                        emailController.text,
+                        usernameController.text,
                         passwordController.text,
                       );
+
+                      if (!context.mounted) {
+                        return;
+                      }
+
                       if (success) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Login Successful")),
+                          SnackBar(
+                            content: Text("Login Successful"),
+                            duration: Duration(seconds: 1),
+                          ),
                         );
 
-                        await Future.delayed(
-                          Duration(seconds: 1),
-                          () => Navigator.pushReplacement(
+                        await Future.delayed(Duration(seconds: 1), () {
+                          if (!context.mounted) {
+                            return;
+                          }
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => LocationScreen(),
                             ),
-                          ),
-                        );
+                          );
+                        });
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

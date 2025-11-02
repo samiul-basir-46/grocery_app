@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_shop/screen/homeScreen/home_screen.dart';
 import 'package:food_shop/widgets/custom_button.dart';
 
 class LocationScreen extends StatelessWidget {
@@ -42,7 +43,14 @@ class LocationScreen extends StatelessWidget {
               ],
             ),
             SizedBox(),
-            CustomButton(title: "Submit", isLoading: false),
+            CustomButton(
+              title: "Submit",
+              isLoading: false,
+              onTap: () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+              ),
+            ),
           ],
         ),
       ),

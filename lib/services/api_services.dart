@@ -2,14 +2,22 @@ import 'dart:convert';
 import 'package:food_shop/utils/url_config.dart';
 import 'package:http/http.dart' as http;
 
-class ApiServices{
-  static Future fetchReg(String name, String email, String password) async {
+class ApiServices {
+  static Future fetchReg(
+    String name,
+    String email,
+    String password,
+    String firstName,
+    String lastName,
+  ) async {
     final url = Uri.parse(Url.regUrl);
 
     final body = jsonEncode({
       'name': name,
       'email': email,
       'password': password,
+      'first_name': firstName,
+      'last_name': lastName,
     });
 
     final response = await http.post(

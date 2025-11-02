@@ -16,6 +16,8 @@ class SignupScreen extends StatelessWidget {
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -57,6 +59,38 @@ class SignupScreen extends StatelessWidget {
                   key: _formKey,
                   child: Column(
                     children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: CustomTextField(
+                              text: 'First Name',
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Field is Empty";
+                                }
+                                return null;
+                              },
+                              isObscure: false,
+                              controller: firstNameController,
+                            ),
+                          ),
+                          SizedBox(width: 40),
+                          Expanded(
+                            child: CustomTextField(
+                              text: 'Last Name',
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Field is Empty";
+                                }
+                                return null;
+                              },
+                              isObscure: false,
+                              controller: lastNameController,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: screenHeight * 0.03),
                       CustomTextField(
                         text: 'Username',
                         validator: (value) {
@@ -141,11 +175,13 @@ class SignupScreen extends StatelessWidget {
                         nameController.text,
                         emailController.text,
                         passwordController.text,
+                        firstNameController.text,
+                        lastNameController.text,
                       );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
-                      );
+                      if (!context.mounted) {
+                        return;
+                      }
+
                       if (authProvider.errorMessage != null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(authProvider.errorMessage!)),
@@ -153,6 +189,13 @@ class SignupScreen extends StatelessWidget {
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("Account Created")),
+                        );
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
+                          ),
                         );
                       }
                     }

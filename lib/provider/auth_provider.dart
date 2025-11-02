@@ -13,7 +13,13 @@ class ApiProvider with ChangeNotifier {
 
   Map<String, dynamic>? userData;
 
-  Future fetchReg(String name, String email, String password) async {
+  Future fetchReg(
+    String name,
+    String email,
+    String password,
+    String firstName,
+    String lastName,
+  ) async {
     isLoading = true;
     errorMessage = null;
     notifyListeners();
@@ -22,7 +28,13 @@ class ApiProvider with ChangeNotifier {
     try {
       final response = await http.post(
         url,
-        body: jsonEncode({'name': name, 'email': email, 'password': password}),
+        body: jsonEncode({
+          'username': name,
+          'email': email,
+          'password': password,
+          'first_name': firstName,
+          'last_name': lastName,
+        }),
         headers: {"Content-Type": "application/json"},
       );
 
@@ -30,7 +42,7 @@ class ApiProvider with ChangeNotifier {
         userData = jsonDecode(response.body);
       } else {
         final data = jsonDecode(response.body);
-        errorMessage = data['error'] ?? "Something went wrong!";
+        errorMessage = data['error_code'] ?? "Something went wrong!";
       }
     } catch (e) {
       errorMessage = e.toString();
@@ -48,7 +60,7 @@ class ApiProvider with ChangeNotifier {
     try {
       final response = await http.post(
         url,
-        body: jsonEncode({'email': name, 'password': password}),
+        body: jsonEncode({'username': name, 'password': password}),
         headers: {"Content-Type": "application/json"},
       );
 
