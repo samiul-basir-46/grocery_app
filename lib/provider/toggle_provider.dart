@@ -2,11 +2,19 @@ import 'package:flutter/material.dart';
 
 class ToggleProvider extends ChangeNotifier {
 
-  bool isVisibility = true;
+  bool isVisibilitySignup = true;
+  bool isVisibilityLogin = true;
+  bool? isTure;
 
-  void toggleVisibility () {
-    isVisibility = !isVisibility;
+  void toggleVisibilitySignup () {
+    isVisibilitySignup = !isVisibilitySignup;
     notifyListeners();
   }
+
+  void toggleVisibilityLogin(){
+    isVisibilityLogin = !isVisibilityLogin;
+    notifyListeners();
+  }
+
 
 }

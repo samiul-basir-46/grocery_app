@@ -60,7 +60,7 @@ class LoginScreen extends StatelessWidget {
                       CustomTextField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter your valid email";
+                            return "Please enter your valid username";
                           }
                           return null;
                         },
@@ -80,15 +80,15 @@ class LoginScreen extends StatelessWidget {
                         text: 'Password',
                         icon: IconButton(
                           onPressed: () {
-                            toggleProvider.toggleVisibility();
+                            toggleProvider.toggleVisibilityLogin();
                           },
                           icon: Icon(
-                            toggleProvider.isVisibility
+                            toggleProvider.isVisibilityLogin
                                 ? Icons.visibility_off
                                 : Icons.visibility,
                           ),
                         ),
-                        isObscure: toggleProvider.isVisibility,
+                        isObscure: toggleProvider.isVisibilityLogin,
                       ),
                     ],
                   ),
@@ -116,7 +116,13 @@ class LoginScreen extends StatelessWidget {
                       if (success) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text("Login Successful"),
+                            content: Text(
+                              "Login Successful",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            behavior: SnackBarBehavior.floating,
+                            // margin: EdgeInsets.only(bottom: 20),
+                            backgroundColor: Colors.green,
                             duration: Duration(seconds: 1),
                           ),
                         );

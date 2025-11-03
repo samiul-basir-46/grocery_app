@@ -38,6 +38,8 @@ dependencies:
   provider:
   device_preview:
   get_storage:
+  geolocator:
+  geocoding:
 
 dev_dependencies:
   flutter_test:

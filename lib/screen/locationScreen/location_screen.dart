@@ -1,9 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:food_shop/screen/homeScreen/home_screen.dart';
+import 'package:food_shop/services/location_services.dart';
 import 'package:food_shop/widgets/custom_button.dart';
+import 'package:provider/provider.dart';
 
-class LocationScreen extends StatelessWidget {
+class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key});
+
+  @override
+  State<LocationScreen> createState() => _LocationScreenState();
+}
+
+class _LocationScreenState extends State<LocationScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final locationProvider = Provider.of<LocationServices>(
+      context,
+      listen: false,
+    );
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (locationProvider.address == null) {
+        await locationProvider.getCurrentLocation();
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

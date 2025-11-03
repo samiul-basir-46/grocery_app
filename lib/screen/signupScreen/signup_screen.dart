@@ -118,7 +118,7 @@ class SignupScreen extends StatelessWidget {
                       CustomTextField(
                         text: 'Password',
                         controller: passwordController,
-                        isObscure: toggleProvider.isVisibility,
+                        isObscure: toggleProvider.isVisibilitySignup,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Please enter your password";
@@ -129,10 +129,10 @@ class SignupScreen extends StatelessWidget {
                         },
                         icon: IconButton(
                           onPressed: () {
-                            toggleProvider.toggleVisibility();
+                            toggleProvider.toggleVisibilitySignup();
                           },
                           icon: Icon(
-                            toggleProvider.isVisibility
+                            toggleProvider.isVisibilitySignup
                                 ? Icons.visibility_off
                                 : Icons.visibility,
                           ),
@@ -184,11 +184,24 @@ class SignupScreen extends StatelessWidget {
 
                       if (authProvider.errorMessage != null) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(authProvider.errorMessage!)),
+                          SnackBar(
+                            content: Text(
+                              authProvider.errorMessage!,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: Colors.red,
+                          ),
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Account Created")),
+                          SnackBar(
+                            content: Text("Account Created"),
+                            behavior: SnackBarBehavior.floating,
+                            // margin: EdgeInsets.only(bottom: 20),
+                            backgroundColor: Colors.green,
+                            duration: Duration(seconds: 1),
+                          ),
                         );
 
                         Navigator.push(
