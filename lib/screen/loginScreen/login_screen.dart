@@ -66,10 +66,12 @@ class LoginScreen extends StatelessWidget {
                         },
                         controller: usernameController,
                         text: 'Username',
+                        filled: false,
                         isObscure: false,
                       ),
                       SizedBox(height: screenHeight * 0.03),
                       CustomTextField(
+                        filled: false,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Please enter your valid password";
@@ -78,7 +80,7 @@ class LoginScreen extends StatelessWidget {
                         },
                         controller: passwordController,
                         text: 'Password',
-                        icon: IconButton(
+                        suffixIcon: IconButton(
                           onPressed: () {
                             toggleProvider.toggleVisibilityLogin();
                           },
@@ -141,8 +143,11 @@ class LoginScreen extends StatelessWidget {
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
+                            backgroundColor: Colors.red,
+                            behavior: SnackBarBehavior.floating,
                             content: Text(
-                              authProvider.errorMessage ?? "Unknown error",
+                              "Incorrect username or password" ??
+                                  "Unknown error",
                             ),
                           ),
                         );

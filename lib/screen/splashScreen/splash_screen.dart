@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:food_shop/navBarView/nav_bar_view.dart';
 import 'package:food_shop/provider/auth_provider.dart';
 import 'package:food_shop/provider/onboard_provider.dart';
-import 'package:food_shop/screen/homeScreen/home_screen.dart';
 import 'package:food_shop/screen/locationScreen/location_screen.dart';
 
 // import 'package:food_shop/screen/locationScreen/location_screen.dart';
@@ -29,7 +29,7 @@ class SplashScreen extends StatelessWidget {
         if (!context.mounted) return;
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => NavBarView()),
         );
       } else {
         if (!context.mounted) return;

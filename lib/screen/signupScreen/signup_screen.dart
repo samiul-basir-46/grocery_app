@@ -63,6 +63,7 @@ class SignupScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: CustomTextField(
+                              filled: false,
                               text: 'First Name',
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -77,6 +78,7 @@ class SignupScreen extends StatelessWidget {
                           SizedBox(width: 40),
                           Expanded(
                             child: CustomTextField(
+                              filled: false,
                               text: 'Last Name',
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -92,6 +94,7 @@ class SignupScreen extends StatelessWidget {
                       ),
                       SizedBox(height: screenHeight * 0.03),
                       CustomTextField(
+                        filled: false,
                         text: 'Username',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -104,6 +107,7 @@ class SignupScreen extends StatelessWidget {
                       ),
                       SizedBox(height: screenHeight * 0.03),
                       CustomTextField(
+                        filled: false,
                         text: 'Email',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -116,6 +120,7 @@ class SignupScreen extends StatelessWidget {
                       ),
                       SizedBox(height: screenHeight * 0.03),
                       CustomTextField(
+                        filled: false,
                         text: 'Password',
                         controller: passwordController,
                         isObscure: toggleProvider.isVisibilitySignup,
@@ -127,7 +132,7 @@ class SignupScreen extends StatelessWidget {
                           }
                           return null;
                         },
-                        icon: IconButton(
+                        suffixIcon: IconButton(
                           onPressed: () {
                             toggleProvider.toggleVisibilitySignup();
                           },

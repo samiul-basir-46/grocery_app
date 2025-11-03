@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_shop/screen/homeScreen/home_screen.dart';
+import 'package:food_shop/navBarView/nav_bar_view.dart';
+import 'package:food_shop/screen/navigationScreens/homeScreen/home_screen.dart';
 import 'package:food_shop/services/location_services.dart';
 import 'package:food_shop/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,7 @@ class _LocationScreenState extends State<LocationScreen> {
       } else {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => NavBarView()),
         );
       }
     });
