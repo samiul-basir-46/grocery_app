@@ -18,10 +18,7 @@ class HomeScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<GetApiProvider>(
-        context,
-        listen: false,
-      ).fetchProducts();
+      Provider.of<GetApiProvider>(context, listen: false).fetchProducts();
     });
     final locationProvider = Provider.of<LocationServices>(context);
     final authProvider = Provider.of<ApiProvider>(context);
@@ -64,9 +61,13 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: CustomTextField(
                   filled: true,
-                  text: "Search Store",
+                  hintText: "Search Store",
                   isObscure: false,
                   enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                     borderSide: BorderSide.none,
                   ),

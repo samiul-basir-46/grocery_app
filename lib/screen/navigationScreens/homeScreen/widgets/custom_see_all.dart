@@ -61,15 +61,15 @@ class CustomSeeAll extends StatelessWidget {
                   primary: false,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 4 / 4.9,
+                    childAspectRatio: 4 / 4.8,
                   ),
-                  itemCount: productProvider.products!.length,
+                  itemCount: productProvider.products.length,
                   itemBuilder: (context, index) {
-                    final item = productProvider.products![index];
+                    final item = productProvider.products[index];
                     return CustomProductCard(
                       itemName: item.name,
-                      itemImage: "",
-                      itemPrice: item.price.toInt(),
+                      itemImage: item.image,
+                      itemPrice: item.price,
                     );
                   },
                 )
@@ -80,13 +80,13 @@ class CustomSeeAll extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
                     primary: false,
-                    itemCount: productProvider.products!.length,
+                    itemCount: productProvider.products.length,
                     itemBuilder: (context, index) {
-                      final item = productProvider.products![index];
+                      final item = productProvider.products[index];
                       return CustomProductCard(
                         itemName: item.name,
-                        itemImage: "",
-                        itemPrice: item.price.toInt(),
+                        itemImage: item.image,
+                        itemPrice: item.price,
                       );
                     },
                   ),
@@ -97,6 +97,3 @@ class CustomSeeAll extends StatelessWidget {
   }
 }
 
-extension on GetApiProvider {
-  operator [](int other) {}
-}

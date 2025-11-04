@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:food_shop/model/api_get_model.dart';
-import 'package:food_shop/provider/get_provider.dart';
 import 'package:food_shop/utils/colors.dart';
-import 'package:provider/provider.dart';
-
 class CustomProductCard extends StatelessWidget {
-
   final String itemName;
-  final int itemPrice;
+  final double itemPrice;
   final String itemImage;
 
-  const CustomProductCard({super.key, required this.itemName, required this.itemPrice, required this.itemImage});
+  const CustomProductCard({
+    super.key,
+    required this.itemName,
+    required this.itemPrice,
+    required this.itemImage,
+  });
 
   @override
   Widget build(BuildContext context) {
-
-
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
@@ -30,32 +28,57 @@ class CustomProductCard extends StatelessWidget {
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SizedBox(height: screenHeight * 0.018),
-          Align(
-            alignment: Alignment.center,
-            child: Image.network(
-              itemImage,
-              width: screenWidth * 0.18,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    SizedBox(height: screenHeight * 0.018),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Image.network(
+                        "$itemImage",
+                        width: screenWidth * 0.2,
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.015),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      itemName,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    Text("7pcs, Price"),
+                    SizedBox(height: screenHeight * 0.01),
+                  ],
+                ),
+              ],
             ),
           ),
-          SizedBox(height: screenHeight * 0.015),
-          Text(
-            itemName,
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
-          Text("7pcs, Price"),
-          SizedBox(height: screenHeight * 0.01),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("\$$itemName", style: TextStyle(fontWeight: FontWeight.w500,fontSize: 18)),
+              Text(
+                "\$${itemPrice.toDouble()}",
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+              ),
               GestureDetector(
                 onTap: () {},
                 child: Container(
                   padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(color: AppColors.primaryColor,borderRadius: BorderRadius.circular(8)),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                   child: Icon(Icons.add, color: Colors.white),
                 ),
               ),
