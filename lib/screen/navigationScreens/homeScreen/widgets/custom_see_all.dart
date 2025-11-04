@@ -50,50 +50,56 @@ class CustomSeeAll extends StatelessWidget {
             ],
           ),
         ),
-        AnimatedSwitcher(
-          duration: Duration(milliseconds: 400),
-          transitionBuilder: (child, animation) =>
-              SizeTransition(sizeFactor: animation, child: child),
-          child: seeAll
-              ? GridView.builder(
-                  key: ValueKey("$sectionKey-grid"),
-                  shrinkWrap: true,
-                  primary: false,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 4 / 4.8,
-                  ),
-                  itemCount: productProvider.products.length,
-                  itemBuilder: (context, index) {
-                    final item = productProvider.products[index];
-                    return CustomProductCard(
-                      itemName: item.name,
-                      itemImage: item.image,
-                      itemPrice: item.price,
-                    );
-                  },
-                )
-              : SizedBox(
-                  key: ValueKey("$sectionKey-horizontal"),
-                  height: screenHeight * 0.27,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    primary: false,
-                    itemCount: productProvider.products.length,
-                    itemBuilder: (context, index) {
-                      final item = productProvider.products[index];
-                      return CustomProductCard(
-                        itemName: item.name,
-                        itemImage: item.image,
-                        itemPrice: item.price,
-                      );
-                    },
-                  ),
-                ),
-        ),
+        productProvider.isLoading
+            ? SizedBox(
+              height: screenHeight * 0.27,
+              child: Center(
+                child: CircularProgressIndicator(color: Colors.black),
+              ),
+            )
+            : AnimatedSwitcher(
+                duration: Duration(milliseconds: 400),
+                transitionBuilder: (child, animation) =>
+                    SizeTransition(sizeFactor: animation, child: child),
+                child: seeAll
+                    ? GridView.builder(
+                        key: ValueKey("$sectionKey-grid"),
+                        shrinkWrap: true,
+                        primary: false,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 4 / 4.8,
+                        ),
+                        itemCount: productProvider.products.length,
+                        itemBuilder: (context, index) {
+                          final item = productProvider.products[index];
+                          return CustomProductCard(
+                            itemName: item.name,
+                            itemImage: item.image,
+                            itemPrice: item.price,
+                          );
+                        },
+                      )
+                    : SizedBox(
+                        key: ValueKey("$sectionKey-horizontal"),
+                        height: screenHeight * 0.27,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: productProvider.products.length,
+                          itemBuilder: (context, index) {
+                            final item = productProvider.products[index];
+                            return CustomProductCard(
+                              itemName: item.name,
+                              itemImage: item.image,
+                              itemPrice: item.price,
+                            );
+                          },
+                        ),
+                      ),
+              ),
       ],
     );
   }
 }
-

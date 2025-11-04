@@ -34,11 +34,7 @@ class HomeScreen extends StatelessWidget {
                   return TextButton.icon(
                     onPressed: () {},
                     label: locationProvider.isLoading
-                        ? Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.black,
-                            ),
-                          )
+                        ? SizedBox.shrink()
                         : Text(
                             "${locationProvider.address}" ??
                                 "Fetching Location",
@@ -59,22 +55,25 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: screenHeight * 0.02),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: CustomTextField(
-                  filled: true,
-                  hintText: "Search Store",
-                  isObscure: false,
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide.none,
-                  ),
-                  focusBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide.none,
-                  ),
-                  fillColor: Color(0xFFf2f3f2),
-                  prefixIcon: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.search),
+                child: SizedBox(
+                  width: screenWidth * 0.9,
+                  child: CustomTextField(
+                    filled: true,
+                    hintText: "Search Store",
+                    isObscure: false,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide.none,
+                    ),
+                    fillColor: Color(0xFFf2f3f2),
+                    prefixIcon: IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.search),
+                    ),
                   ),
                 ),
               ),

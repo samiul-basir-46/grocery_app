@@ -3,9 +3,10 @@ import 'package:food_shop/utils/colors.dart';
 
 class CustomButton extends StatelessWidget {
   final String title;
-  final Color? color;
+  final Color? color, textColor;
   final void Function()? onTap;
   final bool isLoading;
+  final FontWeight? fontWeight;
 
   const CustomButton({
     super.key,
@@ -13,6 +14,8 @@ class CustomButton extends StatelessWidget {
     this.color,
     this.onTap,
     required this.isLoading,
+    this.textColor,
+    this.fontWeight,
   });
 
   @override
@@ -30,11 +33,18 @@ class CustomButton extends StatelessWidget {
           child: isLoading
               ? Text(
                   "Please wait...",
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+                  style: TextStyle(
+                    color: textColor ?? Colors.white,
+                    fontSize: 18,
+                  ),
                 )
               : Text(
                   title,
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+                  style: TextStyle(
+                    color: textColor ?? Colors.white,
+                    fontSize: 18,
+                    fontWeight: fontWeight,
+                  ),
                 ),
         ),
       ),

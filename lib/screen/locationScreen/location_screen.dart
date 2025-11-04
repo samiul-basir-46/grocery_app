@@ -76,7 +76,7 @@ class _LocationScreenState extends State<LocationScreen> {
               isLoading: false,
               onTap: () => Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
+                MaterialPageRoute(builder: (context) => NavBarView()),
               ),
             ),
           ],
