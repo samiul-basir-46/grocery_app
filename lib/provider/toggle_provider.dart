@@ -6,6 +6,14 @@ class ToggleProvider extends ChangeNotifier {
   bool isVisibilityLogin = true;
   bool? isTure;
 
+  final Map<String, bool> _seeAllMap = {
+    'exclusive' : false,
+    'bestSelling' : false,
+    'groceries' : false
+  };
+
+  bool getSeeAll(String key) => _seeAllMap[key] ?? false;
+
   void toggleVisibilitySignup () {
     isVisibilitySignup = !isVisibilitySignup;
     notifyListeners();
@@ -13,6 +21,11 @@ class ToggleProvider extends ChangeNotifier {
 
   void toggleVisibilityLogin(){
     isVisibilityLogin = !isVisibilityLogin;
+    notifyListeners();
+  }
+
+  void toggleSeeAll(String key) {
+    _seeAllMap[key] = !(_seeAllMap[key] ?? false);
     notifyListeners();
   }
 

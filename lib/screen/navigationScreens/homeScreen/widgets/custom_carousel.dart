@@ -39,7 +39,7 @@ class CustomCarousel extends StatelessWidget {
             );
           },
           options: CarouselOptions(
-            aspectRatio: 16 / 5,
+            aspectRatio: 16 / 4,
             autoPlay: true,
             autoPlayAnimationDuration: Duration(seconds: 1),
             enlargeCenterPage: true,

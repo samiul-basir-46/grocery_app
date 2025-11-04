@@ -1,5 +1,5 @@
 class Url {
-  static const String baseUrl = "https://demo.zhndev.site/wp/wp-json";
+  static const String baseUrl = "https://api.zhndev.site/wp-json";
   static const String regUrl = "$baseUrl/base/api/auth/register";
   static const String loginUrl = "$baseUrl/base/api/auth/login";
   static const String profileUrl = "$baseUrl/base/api/auth/profile";

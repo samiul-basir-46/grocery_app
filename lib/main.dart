@@ -1,11 +1,13 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:food_shop/navBarView/nav_bar_view.dart';
 import 'package:food_shop/provider/auth_provider.dart';
+import 'package:food_shop/provider/get_provider.dart';
 import 'package:food_shop/provider/onboard_provider.dart';
 import 'package:food_shop/provider/slider_provider.dart';
 import 'package:food_shop/provider/toggle_provider.dart';
 import 'package:food_shop/screen/loginScreen/login_screen.dart';
+import 'package:food_shop/screen/navigationScreens/homeScreen/home_screen.dart';
 import 'package:food_shop/screen/splashScreen/splash_screen.dart';
 import 'package:food_shop/services/location_services.dart';
 import 'package:food_shop/test.dart';
@@ -35,6 +37,7 @@ void main() async {
           create: (context) => LocationServices()..loadSavedLocation(),
         ),
         ChangeNotifierProvider(create: (context) => SliderProvider()),
+        ChangeNotifierProvider(create: (context) => GetApiProvider(),)
       ],
       child: MyApp(),
     ),
@@ -56,7 +59,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: SplashScreen(),
+      home: NavBarView(),
     );
   }
 }

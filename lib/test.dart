@@ -1,119 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:food_shop/provider/get_provider.dart';
+import 'package:provider/provider.dart';
 
-class ExclusiveProductSection extends StatefulWidget {
-  const ExclusiveProductSection({super.key});
+class ExclusiveProductPage extends StatefulWidget {
+  const ExclusiveProductPage({super.key});
 
   @override
-  State<ExclusiveProductSection> createState() =>
-      _ExclusiveProductSectionState();
+  State<ExclusiveProductPage> createState() => _ExclusiveProductPageState();
 }
 
-class _ExclusiveProductSectionState extends State<ExclusiveProductSection> {
-  bool seeAll = false;
-
-  final List<Map<String, dynamic>> exclusiveProducts = [
-    {"name": "Banana", "image": "assets/images/banana.png", "price": 40},
-    {"name": "Apple", "image": "assets/images/apple.png", "price": 100},
-    {"name": "Tomato", "image": "assets/images/tomato.png", "price": 60},
-    {"name": "Orange", "image": "assets/images/orange.png", "price": 80},
-    {"name": "Mango", "image": "assets/images/mango.png", "price": 120},
-  ];
+class _ExclusiveProductPageState extends State<ExclusiveProductPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<GetApiProvider>(context, listen: false).fetchProducts();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // 🔹 Title & See All Button
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Exclusive Offer",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    seeAll = !seeAll;
-                  });
-                },
-                child: Text(
-                  seeAll ? "Show Less" : "See All",
-                  style: TextStyle(
-                    color: Colors.green,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+    final getProvider = Provider.of<GetApiProvider>(context);
 
-        // 🔹 Horizontal scroll or GridView (toggle)
-        AnimatedSwitcher(
-          duration: Duration(milliseconds: 400),
-          transitionBuilder: (child, animation) =>
-              SizeTransition(sizeFactor: animation, child: child),
-          child: seeAll
-              ? Padding(
-            key: ValueKey('grid'),
-            padding: const EdgeInsets.all(8.0),
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: exclusiveProducts.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // দুইটা কলাম
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: 0.8,
-              ),
-              itemBuilder: (context, index) {
-                final item = exclusiveProducts[index];
-                return productCard(item);
-              },
-            ),
-          )
-              : SizedBox(
-            key: ValueKey('horizontal'),
-            height: 200,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: exclusiveProducts.length,
-              itemBuilder: (context, index) {
-                final item = exclusiveProducts[index];
-                return Container(
-                  width: 140,
-                  margin: EdgeInsets.only(
-                    left: 16,
-                    right: index == exclusiveProducts.length - 1 ? 16 : 0,
-                  ),
-                  child: productCard(item),
-                );
-              },
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget productCard(Map<String, dynamic> item) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(item['image'], height: 100),
-          Text(item['name'],
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          Text("৳${item['price']}", style: TextStyle(color: Colors.green)),
-        ],
+    return Scaffold(
+      backgroundColor: Colors.grey[100],
+      appBar: AppBar(title: const Text("Grocery Shop")),
+      body: getProvider.isLoading
+          ? Center(child: CircularProgressIndicator())
+          : getProvider.errorMessage != null
+          ? Center(child: Text(getProvider.errorMessage!))
+          : ListView.builder(
+        itemCount: getProvider.products.length ?? 0,
+        itemBuilder: (context, index) {
+          final product = getProvider.products[index];
+          return ListTile(
+            title: Text(product.name),
+            subtitle: Text("\$${product.price.toString()}"),
+            leading: Image.network(product.image),
+          );
+        },
       ),
     );
   }
