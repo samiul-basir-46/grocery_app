@@ -18,7 +18,8 @@ class HomeScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     final size = MediaQuery.of(context).size;
-    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<GetApiProvider>(context, listen: false).fetchProducts();
@@ -83,9 +84,24 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: screenHeight * 0.02),
               CustomCarousel(),
               SizedBox(height: screenHeight * 0.03),
-              CustomSeeAll(title: "Exclusive Offers", sectionKey: 'exclusive'),
-              CustomSeeAll(title: "Best Selling", sectionKey: 'bestSelling'),
-              CustomSeeAll(title: "Groceries", sectionKey: 'groceries'),
+              CustomSeeAll(
+                title: "Exclusive Offers",
+                sectionKey: 'exclusive',
+                startIndex: 0,
+                endIndex: 6,
+              ),
+              CustomSeeAll(
+                title: "Best Selling",
+                sectionKey: 'bestSelling',
+                startIndex: 6,
+                endIndex: 12,
+              ),
+              CustomSeeAll(
+                title: "Groceries",
+                sectionKey: 'groceries',
+                startIndex: 4,
+                endIndex: 9,
+              ),
             ],
           ),
         ),

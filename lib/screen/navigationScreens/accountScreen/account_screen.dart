@@ -149,12 +149,11 @@ class _AccountScreenState extends State<AccountScreen> {
                         backgroundColor: WidgetStateProperty.all<Color>(
                           Color(0xFFF2F3F2),
                         ),
-                        shape:
-                            WidgetStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
                       ),
                       onPressed: () {
                         authProvider.logOut();

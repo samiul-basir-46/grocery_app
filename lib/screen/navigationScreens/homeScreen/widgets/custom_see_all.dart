@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_shop/model/api_get_model.dart';
 import 'package:food_shop/provider/toggle_provider.dart';
 import 'package:food_shop/screen/navigationScreens/homeScreen/widgets/custom_product_card.dart';
 import 'package:provider/provider.dart';
@@ -9,11 +10,13 @@ import '../../../../utils/colors.dart';
 class CustomSeeAll extends StatelessWidget {
   final String title;
   final String sectionKey;
+  final int startIndex;
+  final int endIndex;
 
   const CustomSeeAll({
     super.key,
     required this.title,
-    required this.sectionKey,
+    required this.sectionKey, required this.startIndex, required this.endIndex,
   });
 
   @override
@@ -24,6 +27,20 @@ class CustomSeeAll extends StatelessWidget {
     final productProvider = Provider.of<GetApiProvider>(context);
     final seeAllProvider = Provider.of<ToggleProvider>(context);
     final seeAll = seeAllProvider.getSeeAll(sectionKey);
+
+    List<ApiGetModel> products = productProvider.products;
+
+    // List<ApiGetModel> exclusiveProduct = products.length >= 6
+    //     ? products.sublist(0, 6)
+    //     : products;
+    //
+    // List<ApiGetModel> bestProduct = products.length > 6
+    //     ? products.sublist(6, products.length)
+    //     : [];
+
+    final displayProduct = products.sublist(startIndex,endIndex);
+
+
 
     return Column(
       children: [
@@ -53,30 +70,31 @@ class CustomSeeAll extends StatelessWidget {
         ),
         productProvider.isLoading
             ? SizedBox(
-              height: screenHeight * 0.27,
-              child: Center(
-                child: CircularProgressIndicator(color: Colors.black),
-              ),
-            )
+                height: screenHeight * 0.27,
+                child: Center(
+                  child: CircularProgressIndicator(color: Colors.black),
+                ),
+              )
             : AnimatedSwitcher(
                 duration: Duration(milliseconds: 400),
                 transitionBuilder: (child, animation) =>
                     SizeTransition(sizeFactor: animation, child: child),
                 child: seeAll
                     ? Expanded(
-                      child: GridView.builder(
+                        child: GridView.builder(
                           key: ValueKey("$sectionKey-grid"),
                           shrinkWrap: true,
                           primary: false,
-                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 200,
-                            childAspectRatio: 0.75,
-                            mainAxisSpacing: 2,
-                            crossAxisSpacing: 0
-                          ),
-                          itemCount: productProvider.products.length,
+                          gridDelegate:
+                              SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 200,
+                                childAspectRatio: 0.75,
+                                mainAxisSpacing: 2,
+                                crossAxisSpacing: 0,
+                              ),
+                          itemCount: displayProduct.length,
                           itemBuilder: (context, index) {
-                            final item = productProvider.products[index];
+                            final item = displayProduct[index];
                             return CustomProductCard(
                               itemName: item.name,
                               itemImage: item.image,
@@ -85,7 +103,7 @@ class CustomSeeAll extends StatelessWidget {
                             );
                           },
                         ),
-                    )
+                      )
                     : SizedBox(
                         key: ValueKey("$sectionKey-horizontal"),
                         height: 220,
@@ -93,9 +111,9 @@ class CustomSeeAll extends StatelessWidget {
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
                           primary: false,
-                          itemCount: productProvider.products.length,
+                          itemCount: displayProduct.length,
                           itemBuilder: (context, index) {
-                            final item = productProvider.products[index];
+                            final item = displayProduct[index];
                             return CustomProductCard(
                               itemName: item.name,
                               itemImage: item.image,
