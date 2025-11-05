@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:food_shop/utils/colors.dart';
+
 class CustomProductCard extends StatelessWidget {
   final String itemName;
   final double itemPrice;
   final String itemImage;
+  final String category;
 
   const CustomProductCard({
     super.key,
     required this.itemName,
     required this.itemPrice,
     required this.itemImage,
+    required this.category,
   });
 
   @override
@@ -18,71 +21,59 @@ class CustomProductCard extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Container(
-      width: screenWidth * 0.40,
-      margin: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-      padding: EdgeInsets.all(10),
+      width: 140,
+      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      padding: EdgeInsets.all(4),
       decoration: BoxDecoration(
         color: Color(0xFFF9F9F9),
         border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
+          Container(
+            height: 90,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                image: NetworkImage("$itemImage"),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  children: [
-                    SizedBox(height: screenHeight * 0.018),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Image.network(
-                        "$itemImage",
-                        width: screenWidth * 0.2,
-                      ),
-                    ),
-                    SizedBox(height: screenHeight * 0.015),
-                  ],
+                Text(
+                  itemName,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Text(category),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      itemName,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: TextStyle(fontWeight: FontWeight.w600),
+                      "\$$itemPrice".toString(),
+                      style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
                     ),
-                    Text("7pcs, Price"),
-                    SizedBox(height: screenHeight * 0.01),
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(9),
+                        color: AppColors.primaryColor
+                      ),
+                      child: Icon(Icons.add,color: Colors.white,),
+                    )
                   ],
                 ),
               ],
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "\$${itemPrice.toDouble()}",
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
-              ),
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(Icons.add, color: Colors.white),
-                ),
-              ),
-            ],
           ),
         ],
       ),

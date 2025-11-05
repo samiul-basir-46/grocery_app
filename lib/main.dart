@@ -11,6 +11,7 @@ import 'package:food_shop/screen/navigationScreens/homeScreen/home_screen.dart';
 import 'package:food_shop/screen/splashScreen/splash_screen.dart';
 import 'package:food_shop/services/location_services.dart';
 import 'package:food_shop/test.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:provider/provider.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -37,9 +38,9 @@ void main() async {
           create: (context) => LocationServices()..loadSavedLocation(),
         ),
         ChangeNotifierProvider(create: (context) => SliderProvider()),
-        ChangeNotifierProvider(create: (context) => GetApiProvider(),)
+        ChangeNotifierProvider(create: (context) => GetApiProvider()),
       ],
-      child: MyApp(),
+      child: DevicePreview(builder: (context) => MyApp()),
     ),
   );
 }
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final box = GetStorage();
+    // final box = GetStorage();
     // final token = box.read('token');
 
     return MaterialApp(

@@ -10,7 +10,9 @@ class CustomCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
+    final size = MediaQuery.of(context).size;
+
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     List<String> images = [
       "https://imgs.search.brave.com/PGnUSkDOh6l-ny6uXkAJ9FVsBafuDnlaVO1TNpzvPM8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS12ZWN0b3Iv/Z3JvY2VyeS1zdG9y/ZS1zYWxlLWJhbm5l/ci10ZW1wbGF0ZV8y/My0yMTUxMDg5ODQ2/LmpwZz9zZW10PWFp/c19oeWJyaWQmdz03/NDAmcT04MA",
@@ -20,6 +22,8 @@ class CustomCarousel extends StatelessWidget {
 
     final sliderProvider = Provider.of<SliderProvider>(context);
 
+
+
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
@@ -27,8 +31,8 @@ class CustomCarousel extends StatelessWidget {
           itemCount: images.length,
           itemBuilder: (context, index, realIndex) {
             return Container(
-              height: screenHeight * 0.1,
-              width: double.infinity,
+              // height: isLandscape? size.height * 0.01 : size.height * 0.01,
+              width: isLandscape ? size.width * 0.6 : double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 image: DecorationImage(
@@ -39,7 +43,7 @@ class CustomCarousel extends StatelessWidget {
             );
           },
           options: CarouselOptions(
-            aspectRatio: 16 / 4,
+            aspectRatio: isLandscape?16 / 3 : 16/4,
             autoPlay: true,
             autoPlayAnimationDuration: Duration(seconds: 1),
             enlargeCenterPage: true,

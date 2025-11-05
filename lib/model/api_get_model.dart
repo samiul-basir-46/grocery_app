@@ -4,8 +4,10 @@ class ApiGetModel {
   final String description;
   final double price;
   final String image;
+  final String category;
 
   ApiGetModel({
+    required this.category,
     required this.id,
     required this.name,
     required this.description,
@@ -18,6 +20,7 @@ class ApiGetModel {
       id: json['id'],
       name: json['name'],
       description: json['description'] ?? '',
+      category: json['category']['name'] ?? '',
       price: (json['price'] as num).toDouble(),
       image: (json['images'] != null && (json['images'] as List).isNotEmpty)
           ? json['images'][0]['url']

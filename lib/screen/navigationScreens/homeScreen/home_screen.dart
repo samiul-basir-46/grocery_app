@@ -17,6 +17,9 @@ class HomeScreen extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
+    final size = MediaQuery.of(context).size;
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<GetApiProvider>(context, listen: false).fetchProducts();
     });
@@ -56,7 +59,7 @@ class HomeScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SizedBox(
-                  width: screenWidth * 0.9,
+                  width: isLandscape ? size.width * 0.6 : double.infinity,
                   child: CustomTextField(
                     filled: true,
                     hintText: "Search Store",

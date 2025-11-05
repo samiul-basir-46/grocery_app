@@ -19,6 +19,7 @@ class CustomSeeAll extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.height;
 
     final productProvider = Provider.of<GetApiProvider>(context);
     final seeAllProvider = Provider.of<ToggleProvider>(context);
@@ -62,27 +63,32 @@ class CustomSeeAll extends StatelessWidget {
                 transitionBuilder: (child, animation) =>
                     SizeTransition(sizeFactor: animation, child: child),
                 child: seeAll
-                    ? GridView.builder(
-                        key: ValueKey("$sectionKey-grid"),
-                        shrinkWrap: true,
-                        primary: false,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 4 / 4.8,
+                    ? Expanded(
+                      child: GridView.builder(
+                          key: ValueKey("$sectionKey-grid"),
+                          shrinkWrap: true,
+                          primary: false,
+                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 200,
+                            childAspectRatio: 0.75,
+                            mainAxisSpacing: 2,
+                            crossAxisSpacing: 0
+                          ),
+                          itemCount: productProvider.products.length,
+                          itemBuilder: (context, index) {
+                            final item = productProvider.products[index];
+                            return CustomProductCard(
+                              itemName: item.name,
+                              itemImage: item.image,
+                              itemPrice: item.price,
+                              category: item.category,
+                            );
+                          },
                         ),
-                        itemCount: productProvider.products.length,
-                        itemBuilder: (context, index) {
-                          final item = productProvider.products[index];
-                          return CustomProductCard(
-                            itemName: item.name,
-                            itemImage: item.image,
-                            itemPrice: item.price,
-                          );
-                        },
-                      )
+                    )
                     : SizedBox(
                         key: ValueKey("$sectionKey-horizontal"),
-                        height: screenHeight * 0.27,
+                        height: 220,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
@@ -94,6 +100,7 @@ class CustomSeeAll extends StatelessWidget {
                               itemName: item.name,
                               itemImage: item.image,
                               itemPrice: item.price,
+                              category: item.category,
                             );
                           },
                         ),

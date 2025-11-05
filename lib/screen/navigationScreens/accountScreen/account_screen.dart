@@ -4,7 +4,6 @@ import 'package:food_shop/provider/get_provider.dart';
 import 'package:food_shop/screen/loginScreen/login_screen.dart';
 import 'package:food_shop/screen/navigationScreens/accountScreen/widget/custom_list_tile.dart';
 import 'package:food_shop/utils/colors.dart';
-import 'package:food_shop/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -30,7 +29,10 @@ class _AccountScreenState extends State<AccountScreen> {
     final authProvider = Provider.of<ApiProvider>(context);
 
     double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
+
+    final size = MediaQuery.of(context).size;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
       body: SafeArea(
@@ -130,20 +132,25 @@ class _AccountScreenState extends State<AccountScreen> {
                   Divider(color: Color(0xFFE2E2E2)),
                 ],
               ),
-              SizedBox(height: screenHeight * 0.07),
+              SizedBox(
+                height: isLandscape ? size.height * 0.07 : size.height * 0.001,
+              ),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: SizedBox(
-                    height: screenHeight * 0.07,
+                    height: isLandscape
+                        ? size.height * 0.15
+                        : size.height * 0.07,
+                    width: isLandscape ? size.width * 0.5 : double.infinity,
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
+                        backgroundColor: WidgetStateProperty.all<Color>(
                           Color(0xFFF2F3F2),
                         ),
                         shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                            WidgetStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),

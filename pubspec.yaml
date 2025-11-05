@@ -40,7 +40,6 @@ dependencies:
   get_storage:
   geolocator:
   geocoding:
-
   carousel_slider:
   smooth_page_indicator: ^1.2.1
 
