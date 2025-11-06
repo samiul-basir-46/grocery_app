@@ -1,33 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:food_shop/provider/toggle_provider.dart';
 import 'package:food_shop/screen/navigationScreens/accountScreen/account_screen.dart';
 import 'package:food_shop/screen/navigationScreens/cartScreen/cart_screen.dart';
 import 'package:food_shop/screen/navigationScreens/exploreScreen/explore_screen.dart';
 import 'package:food_shop/screen/navigationScreens/favoriteScreen/favorite_screen.dart';
 import 'package:food_shop/screen/navigationScreens/homeScreen/home_screen.dart';
 import 'package:food_shop/utils/colors.dart';
+import 'package:provider/provider.dart';
 
-class NavBarView extends StatefulWidget {
+class NavBarView extends StatelessWidget {
   const NavBarView({super.key});
 
   @override
-  State<NavBarView> createState() => _NavBarViewState();
-}
-
-class _NavBarViewState extends State<NavBarView> {
-  int currentIndex = 0;
-
-  final List<Widget> screens = const [
-    HomeScreen(),
-    ExploreScreen(),
-    CartScreen(),
-    FavoriteScreen(),
-    AccountScreen(),
-  ];
-
-  @override
   Widget build(BuildContext context) {
+
+    final navBarProvider = Provider.of<ToggleProvider>(context);
+
     return Scaffold(
-      body: screens[currentIndex],
+      body: IndexedStack(
+        index: navBarProvider.index,
+        children: [
+          HomeScreen(),
+          ExploreScreen(),
+          CartScreen(),
+          FavoriteScreen(),
+          AccountScreen(),
+        ],
+      ),
       bottomNavigationBar: ClipRRect(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
@@ -35,26 +34,22 @@ class _NavBarViewState extends State<NavBarView> {
         ),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          currentIndex: currentIndex,
+          currentIndex: navBarProvider.index,
           backgroundColor: Colors.white70,
           elevation: 10,
-          onTap: (value) {
-            setState(() {
-              currentIndex = value;
-            });
-          },
+          onTap: navBarProvider.navBarChange,
           selectedItemColor: AppColors.primaryColor,
           unselectedItemColor: Colors.black,
           items: [
             BottomNavigationBarItem(
               icon: Image.asset(
                 "assets/bottom_images/shop_images.png",
-                scale: 2.5,
+                scale: 3,
                 color: Colors.black,
               ),
               activeIcon: Image.asset(
                 "assets/bottom_images/shop_images.png",
-                scale: 2.5,
+                scale: 3,
                 color: AppColors.primaryColor,
               ),
               label: "Shop",
@@ -62,12 +57,12 @@ class _NavBarViewState extends State<NavBarView> {
             BottomNavigationBarItem(
               icon: Image.asset(
                 "assets/bottom_images/explore_images.png",
-                scale: 2.5,
+                scale: 3,
                 color: Colors.black,
               ),
               activeIcon: Image.asset(
                 "assets/bottom_images/explore_images.png",
-                scale: 2.5,
+                scale: 3,
                 color: AppColors.primaryColor,
               ),
               label: "Explore",
@@ -75,12 +70,12 @@ class _NavBarViewState extends State<NavBarView> {
             BottomNavigationBarItem(
               icon: Image.asset(
                 "assets/bottom_images/cart_images.png",
-                scale: 2.5,
+                scale: 3,
                 color: Colors.black,
               ),
               activeIcon: Image.asset(
                 "assets/bottom_images/cart_images.png",
-                scale: 2.5,
+                scale: 3,
                 color: AppColors.primaryColor,
               ),
               label: "Cart",
@@ -88,12 +83,12 @@ class _NavBarViewState extends State<NavBarView> {
             BottomNavigationBarItem(
               icon: Image.asset(
                 "assets/bottom_images/favorite_images.png",
-                scale: 2.5,
+                scale: 3,
                 color: Colors.black,
               ),
               activeIcon: Image.asset(
                 "assets/bottom_images/favorite_images.png",
-                scale: 2.5,
+                scale: 3,
                 color: AppColors.primaryColor,
               ),
               label: "Favorite",
@@ -101,12 +96,12 @@ class _NavBarViewState extends State<NavBarView> {
             BottomNavigationBarItem(
               icon: Image.asset(
                 "assets/bottom_images/account_images.png",
-                scale: 2.5,
+                scale: 3,
                 color: Colors.black,
               ),
               activeIcon: Image.asset(
                 "assets/bottom_images/account_images.png",
-                scale: 2.5,
+                scale: 3,
                 color: AppColors.primaryColor,
               ),
               label: "Account",

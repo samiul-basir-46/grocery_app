@@ -6,6 +6,8 @@ import 'package:food_shop/screen/navigationScreens/accountScreen/widget/custom_l
 import 'package:food_shop/utils/colors.dart';
 import 'package:provider/provider.dart';
 
+import '../../../provider/toggle_provider.dart';
+
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
 
@@ -158,6 +160,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       onPressed: () {
                         authProvider.logOut();
                         profileProvider.profileLogOut();
+                        Provider.of<ToggleProvider>(context,listen: false).resetNav();
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(

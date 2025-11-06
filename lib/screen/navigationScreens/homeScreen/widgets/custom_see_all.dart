@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_shop/model/api_get_model.dart';
 import 'package:food_shop/provider/toggle_provider.dart';
-import 'package:food_shop/screen/navigationScreens/homeScreen/widgets/custom_product_card.dart';
+import 'package:food_shop/screen/productDetailsScreen/product_details_screen.dart';
+import 'package:food_shop/test.dart';
+import 'package:food_shop/widgets/custom_product_card.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../provider/get_provider.dart';
@@ -16,31 +18,25 @@ class CustomSeeAll extends StatelessWidget {
   const CustomSeeAll({
     super.key,
     required this.title,
-    required this.sectionKey, required this.startIndex, required this.endIndex,
+    required this.sectionKey,
+    required this.startIndex,
+    required this.endIndex,
   });
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.height;
 
     final productProvider = Provider.of<GetApiProvider>(context);
     final seeAllProvider = Provider.of<ToggleProvider>(context);
+
     final seeAll = seeAllProvider.getSeeAll(sectionKey);
 
     List<ApiGetModel> products = productProvider.products;
 
-    // List<ApiGetModel> exclusiveProduct = products.length >= 6
-    //     ? products.sublist(0, 6)
-    //     : products;
-    //
-    // List<ApiGetModel> bestProduct = products.length > 6
-    //     ? products.sublist(6, products.length)
-    //     : [];
-
-    final displayProduct = products.sublist(startIndex,endIndex);
-
-
+    final displayProduct = products.isNotEmpty
+        ? products.sublist(startIndex, endIndex.clamp(0, products.length))
+        : [];
 
     return Column(
       children: [
@@ -80,29 +76,39 @@ class CustomSeeAll extends StatelessWidget {
                 transitionBuilder: (child, animation) =>
                     SizeTransition(sizeFactor: animation, child: child),
                 child: seeAll
-                    ? Expanded(
-                        child: GridView.builder(
-                          key: ValueKey("$sectionKey-grid"),
-                          shrinkWrap: true,
-                          primary: false,
-                          gridDelegate:
-                              SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 200,
-                                childAspectRatio: 0.75,
-                                mainAxisSpacing: 2,
-                                crossAxisSpacing: 0,
-                              ),
-                          itemCount: displayProduct.length,
-                          itemBuilder: (context, index) {
-                            final item = displayProduct[index];
-                            return CustomProductCard(
-                              itemName: item.name,
-                              itemImage: item.image,
-                              itemPrice: item.price,
-                              category: item.category,
-                            );
-                          },
+                    ? GridView.builder(
+                        key: ValueKey("$sectionKey-grid"),
+                        shrinkWrap: true,
+                        primary: false,
+                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 200,
+                          childAspectRatio: 0.75,
+                          mainAxisSpacing: 2,
+                          crossAxisSpacing: 0,
                         ),
+                        itemCount: displayProduct.length > 6
+                            ? 6
+                            : displayProduct.length,
+                        itemBuilder: (context, index) {
+                          final item = displayProduct[index];
+                          return CustomProductCard(
+                            itemName: item.name,
+                            itemImage: item.image,
+                            itemPrice: item.price,
+                            category: item.category,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProductDetailsScreen(
+                                    productsId:
+                                        item.id,
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
                       )
                     : SizedBox(
                         key: ValueKey("$sectionKey-horizontal"),
@@ -111,7 +117,9 @@ class CustomSeeAll extends StatelessWidget {
                           scrollDirection: Axis.horizontal,
                           shrinkWrap: true,
                           primary: false,
-                          itemCount: displayProduct.length,
+                          itemCount: displayProduct.length > 6
+                              ? 6
+                              : displayProduct.length,
                           itemBuilder: (context, index) {
                             final item = displayProduct[index];
                             return CustomProductCard(
@@ -119,6 +127,17 @@ class CustomSeeAll extends StatelessWidget {
                               itemImage: item.image,
                               itemPrice: item.price,
                               category: item.category,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProductDetailsScreen(
+                                      productsId:
+                                          item.id,
+                                    ),
+                                  ),
+                                );
+                              },
                             );
                           },
                         ),

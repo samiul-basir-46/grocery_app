@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:food_shop/model/api_get_model.dart';
+import 'package:food_shop/model/product_details_model.dart';
 import 'package:food_shop/model/profile_model.dart';
 import 'package:food_shop/utils/url_config.dart';
 import 'package:get_storage/get_storage.dart';
@@ -32,7 +33,7 @@ class GetApiProvider with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    final url = Uri.parse("https://api.zhndev.site/wp-json/base/api/products");
+    final url = Uri.parse(Url.productsUrl);
 
     try {
       final response = await http.get(url);
@@ -95,6 +96,7 @@ class GetApiProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+  
 
   void profileLogOut() {
     box.remove('token');

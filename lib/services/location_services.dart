@@ -33,7 +33,7 @@ class LocationServices with ChangeNotifier {
       }
 
       Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
+        locationSettings: LocationSettings(accuracy: LocationAccuracy.best),
       );
 
       latitude = position.latitude;
@@ -47,7 +47,6 @@ class LocationServices with ChangeNotifier {
       Placemark place = placemarks.first;
       address = "${place.locality}, ${place.country}";
       box.write('address', address);
-
     } catch (e) {
       address = "Error $e";
     } finally {
@@ -56,9 +55,8 @@ class LocationServices with ChangeNotifier {
     }
   }
 
-  void loadSavedLocation(){
+  void loadSavedLocation() {
     address = box.read('address');
     notifyListeners();
   }
-
 }

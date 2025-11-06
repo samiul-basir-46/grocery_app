@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_shop/navBarView/nav_bar_view.dart';
+import 'package:food_shop/provider/toggle_provider.dart';
 import 'package:food_shop/screen/navigationScreens/homeScreen/home_screen.dart';
 import 'package:food_shop/services/location_services.dart';
 import 'package:food_shop/widgets/custom_button.dart';
@@ -36,6 +37,7 @@ class _LocationScreenState extends State<LocationScreen> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
+
 
     return Scaffold(
       appBar: AppBar(
@@ -74,10 +76,9 @@ class _LocationScreenState extends State<LocationScreen> {
             CustomButton(
               title: "Submit",
               isLoading: false,
-              onTap: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => NavBarView()),
-              ),
+              onTap: () {
+                Provider.of<ToggleProvider>(context,listen: false).changeTab(0);
+              }
             ),
           ],
         ),

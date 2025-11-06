@@ -21,9 +21,13 @@ class HomeScreen extends StatelessWidget {
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<GetApiProvider>(context, listen: false).fetchProducts();
-    });
+    if(Provider.of<GetApiProvider>(context,listen: false).products.isEmpty){
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Provider.of<GetApiProvider>(context, listen: false).fetchProducts();
+      });
+    }
+
+
     final locationProvider = Provider.of<LocationServices>(context);
     final authProvider = Provider.of<ApiProvider>(context);
 

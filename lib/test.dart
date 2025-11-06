@@ -1,42 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:food_shop/provider/get_provider.dart';
+import 'package:food_shop/provider/single_product_provider.dart';
+import 'package:food_shop/provider/toggle_provider.dart';
 import 'package:provider/provider.dart';
 
-class ExclusiveProductPage extends StatefulWidget {
-  const ExclusiveProductPage({super.key});
+class ProductDetailsScreen2 extends StatefulWidget {
+  final int productsId;
+  const ProductDetailsScreen2({super.key, required this.productsId});
 
   @override
-  State<ExclusiveProductPage> createState() => _ExclusiveProductPageState();
+  State<ProductDetailsScreen2> createState() => _ProductDetailsScreenState();
 }
 
-class _ExclusiveProductPageState extends State<ExclusiveProductPage> {
+class _ProductDetailsScreenState extends State<ProductDetailsScreen2> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<GetApiProvider>(context, listen: false).fetchProducts();
-    });
+    // Provider fetch call
+    final singleProvider = Provider.of<SingleProductProvider>(context, listen: false);
+    singleProvider.fetchSingleProduct(widget.productsId);
   }
 
   @override
   Widget build(BuildContext context) {
-    final getProvider = Provider.of<GetApiProvider>(context);
+    final toggleProvider = Provider.of<ToggleProvider>(context);
+    final size = MediaQuery.of(context).size;
+    final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
-      appBar: AppBar(title: const Text("Grocery Shop")),
-      body: getProvider.isLoading
-          ? Center(child: CircularProgressIndicator())
-          : getProvider.errorMessage != null
-          ? Center(child: Text(getProvider.errorMessage!))
-          : ListView.builder(
-        itemCount: getProvider.products.length ?? 0,
-        itemBuilder: (context, index) {
-          final product = getProvider.products[index];
-          return ListTile(
-            title: Text(product.name),
-            subtitle: Text("\$${product.price.toString()}"),
-            leading: Image.network(product.image),
+      body: Consumer<SingleProductProvider>(
+        builder: (context, singleProvider, child) {
+          final product = singleProvider.singleProduct;
+          if (singleProvider.isLoading) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (product == null) {
+            return Center(child: Text("No product found"));
+          }
+          // এখন UI product দেখাবে
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                Image.network(product.image),
+                Text(product.name),
+                Text("\$${product.price}"),
+                Text(product.description),
+              ],
+            ),
           );
         },
       ),
