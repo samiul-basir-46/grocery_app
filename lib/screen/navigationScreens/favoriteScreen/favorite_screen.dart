@@ -11,15 +11,22 @@ class FavoriteScreen extends StatelessWidget {
         MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
+
+      appBar: AppBar(
+        title: Text("Favorite",style: TextStyle(fontWeight: FontWeight.bold),),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        scrolledUnderElevation: 0,
+        bottom: PreferredSize(
+          preferredSize: Size(double.infinity, 10),
+          child: Divider(color: Color(0xFFE2E2E2)),
+        ),
+        elevation: 0,
+      ),
+
       body: SafeArea(
         child: Column(
           children: [
-            Text(
-              "Favorites",
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24),
-            ),
-            SizedBox(height: size.height * 0.027),
-            Divider(color: Color(0xFFE2E2E2)),
             Expanded(
               child: ListView.builder(
                 shrinkWrap: true,
@@ -44,13 +51,14 @@ class FavoriteScreen extends StatelessWidget {
                                   ),
                                   SizedBox(width: 20),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Sprite Can",
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
-                                          fontSize: 20
+                                          fontSize: 20,
                                         ),
                                       ),
                                       Text("Sprite Can"),
@@ -61,6 +69,7 @@ class FavoriteScreen extends StatelessWidget {
                               Row(
                                 children: [
                                   Text("\$1.59"),
+                                  SizedBox(width: 10),
                                   Icon(Icons.arrow_forward_ios_rounded),
                                 ],
                               ),

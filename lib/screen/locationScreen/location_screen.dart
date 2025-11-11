@@ -15,32 +15,37 @@ class LocationScreen extends StatefulWidget {
 
 class _LocationScreenState extends State<LocationScreen> {
   @override
+  @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    final locationProvider = Provider.of<LocationServices>(
-      context,
-      listen: false,
-    );
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (locationProvider.address == null) {
-        await locationProvider.getCurrentLocation();
-      } else {
+      final locationProvider = Provider.of<LocationServices>(
+        context,
+        listen: false,
+      );
+
+      await Future.delayed(Duration(milliseconds: 500));
+
+      await locationProvider.getCurrentLocation();
+
+      if (mounted) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => NavBarView()),
+          MaterialPageRoute(builder: (context) => HomeScreen()),
         );
       }
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
 
-
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -77,8 +82,12 @@ class _LocationScreenState extends State<LocationScreen> {
               title: "Submit",
               isLoading: false,
               onTap: () {
-                Provider.of<ToggleProvider>(context,listen: false).changeTab(0);
-              }
+                Provider.of<ToggleProvider>(context, listen: false);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => NavBarView()),
+                );
+              },
             ),
           ],
         ),

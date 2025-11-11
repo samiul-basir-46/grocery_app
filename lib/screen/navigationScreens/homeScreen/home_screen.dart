@@ -9,8 +9,24 @@ import 'package:provider/provider.dart';
 
 import '../../../provider/get_provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<GetApiProvider>(context, listen: false);
+      if (provider.products.isEmpty) {
+        provider.fetchProducts();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +36,6 @@ class HomeScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final isLandscape =
         MediaQuery.of(context).orientation == Orientation.landscape;
-
-    if(Provider.of<GetApiProvider>(context,listen: false).products.isEmpty){
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Provider.of<GetApiProvider>(context, listen: false).fetchProducts();
-      });
-    }
-
 
     final locationProvider = Provider.of<LocationServices>(context);
     final authProvider = Provider.of<ApiProvider>(context);

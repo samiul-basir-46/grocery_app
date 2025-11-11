@@ -36,14 +36,20 @@ class CustomProductCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
+            SizedBox(
               height: 90,
-              width: double.infinity,
-              decoration: BoxDecoration(
+              child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                image: DecorationImage(
-                  image: NetworkImage("$itemImage"),
+                child: Image.network(
+                  "$itemImage" ?? '',
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      "assets/images/no_image.png",
+                      color: Colors.grey,
+                      fit: BoxFit.cover,
+                    );
+                  },
                 ),
               ),
             ),

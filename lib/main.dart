@@ -38,6 +38,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => SliderProvider()),
         ChangeNotifierProvider(create: (context) => GetApiProvider()),
         ChangeNotifierProvider(create: (context) => CartProvider()),
+        ChangeNotifierProvider(create: (context) => FavoriteProvider()),
         ChangeNotifierProvider(create: (context) => SingleProductProvider()),
       ],
       child: DevicePreview(builder: (BuildContext context) => MyApp()),

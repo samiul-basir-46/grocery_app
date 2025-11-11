@@ -110,3 +110,72 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 }
+
+class FavoriteProvider with ChangeNotifier {
+  List<CartItem> _items = [];
+  final box = GetStorage();
+
+  FavoriteProvider() {
+    loadFavorites();
+  }
+
+  List<CartItem> get items => _items;
+
+  bool isInFavorite(ApiGetModel product) {
+    return _items.any((item) => item.product.id == product.id);
+  }
+
+  void addToFav(ApiGetModel product) {
+    final index = _items.indexWhere((item) => item.product.id == product.id);
+    if (index != -1) {
+      _items.removeAt(index);
+    } else {
+      _items.add(CartItem(product: product));
+    }
+    saveFavorite();
+    notifyListeners();
+  }
+
+  void saveFavorite() {
+    final favData = _items
+        .map(
+          (item) => {
+            'id': item.product.id,
+            'name': item.product.name,
+            'description': item.product.description,
+            'price': item.product.price,
+            'category': item.product.category,
+            'images': item.product.image,
+          },
+        )
+        .toList();
+    box.write('favorites', favData);
+  }
+
+  void loadFavorites() {
+    final favData = box.read('favorites');
+    if (favData != null) {
+      _items = List<Map<String, dynamic>>.from(favData)
+          .map(
+            (item) => CartItem(
+              product: ApiGetModel(
+                category: item['category'],
+                id: item['id'],
+                name: item['name'],
+                description: item['description'] ?? '',
+                price: (item['price'] as num).toDouble(),
+                image: item['images'],
+              ),
+            ),
+          )
+          .toList();
+    }
+    notifyListeners();
+  }
+
+  void addAllToCart(CartProvider cartProvider) {
+    for (var item in _items) {
+      cartProvider.addToCart(item.product);
+    }
+  }
+}

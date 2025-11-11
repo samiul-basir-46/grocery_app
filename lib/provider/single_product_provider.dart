@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../model/api_get_model.dart';
+import '../model/product_details_model.dart';
 import 'package:flutter/material.dart';
 
-import '../model/product_details_model.dart';
 import '../utils/url_config.dart';
 
 class SingleProductProvider with ChangeNotifier {
@@ -10,6 +11,18 @@ class SingleProductProvider with ChangeNotifier {
   bool isLoading = false;
 
   ProductDetailsModel? get singleProduct => _singleProduct;
+
+  ApiGetModel? get productAsApiGetModel {
+    if (_singleProduct == null) return null;
+    return ApiGetModel(
+      id: _singleProduct!.id,
+      name: _singleProduct!.name,
+      description: _singleProduct!.description,
+      price: _singleProduct!.price,
+      image: _singleProduct!.image,
+      category: '',
+    );
+  }
 
   Future<void> fetchSingleProduct(int id) async {
     isLoading = true;

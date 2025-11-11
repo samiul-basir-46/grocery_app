@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_shop/model/api_get_model.dart';
+import 'package:food_shop/provider/cart_provider.dart';
 import 'package:food_shop/provider/get_provider.dart';
 import 'package:food_shop/provider/single_product_provider.dart';
 import 'package:food_shop/provider/toggle_provider.dart';
@@ -19,11 +21,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    final singleProvider = Provider.of<SingleProductProvider>(
-      context,
-      listen: false,
-    );
-    singleProvider.fetchSingleProduct(widget.productsId);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final singleProvider = Provider.of<SingleProductProvider>(context, listen: false);
+      singleProvider.fetchSingleProduct(widget.productsId);
+    });
   }
 
   @override
@@ -36,15 +37,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
-      body: Consumer(
+      body: Consumer<SingleProductProvider>(
         builder: (context, productProvider, child) {
           final product = singleProvider.singleProduct;
+
           if (singleProvider.isLoading) {
             return Center(child: CircularProgressIndicator());
           }
           if (product == null) {
             return Center(child: Text("No product found"));
           }
+
           return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,6 +95,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ? size.height * 0.6
                             : size.height * 0.3,
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset("assets/images/no_image.png");
+                        },
                       ),
                       SizedBox(
                         height: isLandscape
@@ -120,12 +126,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                           ),
                           InkWell(
-                            child: Icon(
-                              Icons.favorite_border,
-                              size: isLandscape
-                                  ? size.height * 0.07
-                                  : size.height * 0.033,
-                            ),
+                            onTap: (){
+                              // favProvider.addToFav(product as ApiGetModel);
+                            },
+                            child: Icon(Icons.favorite),
                           ),
                         ],
                       ),
@@ -175,7 +179,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             style: TextStyle(
                               fontSize: isLandscape
                                   ? size.height * 0.045
-                                  : size.height * 0.022,
+                                  : size.height * 0.02,
                             ),
                           ),
                           IconButton(
@@ -205,7 +209,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             style: TextStyle(
                               fontSize: isLandscape
                                   ? size.height * 0.045
-                                  : size.height * 0.022,
+                                  : size.height * 0.020,
                             ),
                           ),
                           IconButton(
@@ -236,7 +240,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             style: TextStyle(
                               fontSize: isLandscape
                                   ? size.height * 0.045
-                                  : size.height * 0.022,
+                                  : size.height * 0.020,
                             ),
                           ),
                           Row(
